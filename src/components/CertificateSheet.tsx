@@ -113,19 +113,31 @@ export const CertificateSheet: React.FC<CertificateSheetProps> = ({
             and is compliant with the requirement of:
           </p>
 
-          <div className="mt-[14px] font-sans font-extrabold text-[44px] leading-[1.06] tracking-[-0.015em] text-black">
+          <div className="mt-[14px] font-sans font-extrabold text-[42px] leading-[1.06] tracking-[-0.015em] text-black">
             {isoStandard}
           </div>
 
-          <div className="mt-[4px] font-sans font-bold text-[22px] leading-[1.22] text-black">
+          <div
+            className={`mt-[4px] font-sans font-bold text-black max-w-[600px] ${
+              systemTitle.length > 48
+                ? 'text-[17.5px] leading-[1.26]'
+                : 'text-[22px] leading-[1.22]'
+            }`}
+          >
             {systemTitle}
           </div>
 
-          <p className="mt-[14px] font-serif text-[16.5px] leading-[1.35] text-slate-900">
+          <p className="mt-[12px] font-serif text-[16.5px] leading-[1.35] text-slate-900">
             For the following scope of activities:
           </p>
 
-          <div className="mt-[10px] font-serif font-bold uppercase text-[20px] leading-[1.32] text-black max-w-[600px] break-words">
+          <div
+            className={`mt-[8px] font-serif font-bold uppercase text-black max-w-[600px] break-words ${
+              data.scope_of_activities.trim().length > 110
+                ? 'text-[17.5px] leading-[1.32]'
+                : 'text-[20px] leading-[1.32]'
+            }`}
+          >
             {scopeLines.length > 0 ? (
               scopeLines.map((line, index) => <div key={index}>{line}</div>)
             ) : (

@@ -6,7 +6,9 @@ import {
   CertificateFieldKey,
   CertificateFormData,
   ISO_STANDARD_DEFAULT_TITLES,
-  IsoStandardOption,
+  ISO_STANDARD_SAMPLE_SCOPES,
+  STANDARD_CATALOG,
+  STANDARD_CATEGORIES,
   ValidationErrors,
 } from '../types/certificate';
 
@@ -14,7 +16,12 @@ interface CertificateFormProps {
   data: CertificateFormData;
   errors: ValidationErrors;
   onChange: (field: CertificateFieldKey, value: string) => void;
-  onIsoStandardChange: (standard: string, suggestedTitle?: string) => void;
+  onIsoStandardChange: (
+    standard: string,
+    suggestedTitle?: string,
+    suggestedScope?: string
+  ) => void;
+  onApplySampleScope: () => void;
   onAutoCalculateDates: () => void;
   onLoadSample: () => void;
   onClearForm: () => void;
@@ -42,6 +49,7 @@ export const CertificateForm: React.FC<CertificateFormProps> = ({
   errors,
   onChange,
   onIsoStandardChange,
+  onApplySampleScope,
   onAutoCalculateDates,
   onLoadSample,
   onClearForm,
@@ -50,9 +58,9 @@ export const CertificateForm: React.FC<CertificateFormProps> = ({
   saveStatusMessage,
 }) => {
   const handleSelectStandard = (value: string) => {
-    const defaultTitle =
-      ISO_STANDARD_DEFAULT_TITLES[value as IsoStandardOption];
-    onIsoStandardChange(value, defaultTitle);
+    const defaultTitle = ISO_STANDARD_DEFAULT_TITLES[value];
+    const sampleScope = ISO_STANDARD_SAMPLE_SCOPES[value];
+    onIsoStandardChange(value, defaultTitle, sampleScope);
   };
 
   const renderField = (field: CertificateFieldConfig) => {
@@ -83,14 +91,46 @@ export const CertificateForm: React.FC<CertificateFormProps> = ({
               </span>
             )}
           </label>
+          {field.name === 'scope_of_activities' &&
+          ISO_STANDARD_SAMPLE_SCOPES[data.iso_standard] ? (
+            <button
+              type="button"
+              onClick={onApplySampleScope}
+              className="text-xs font-medium text-blue-700 hover:text-blue-800 whitespace-nowrap shrink-0 cursor-pointer"
+            >
+              Use sample scope
+            </button>
+          ) : null}
         </div>
 
-        {field.type === 'select' && field.options ? (
+        {field.type === 'select' && field.name === 'iso_standard' ? (
           <select
             id={id}
             name={field.name}
             value={value}
             onChange={(e) => handleSelectStandard(e.target.value)}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? `${id}-error` : undefined}
+            className={baseInputClass}
+          >
+            {STANDARD_CATEGORIES.map((category) => (
+              <optgroup key={category} label={category}>
+                {STANDARD_CATALOG.filter((item) => item.category === category).map(
+                  (item) => (
+                    <option key={item.code} value={item.code}>
+                      {item.code}
+                    </option>
+                  )
+                )}
+              </optgroup>
+            ))}
+          </select>
+        ) : field.type === 'select' && field.options ? (
+          <select
+            id={id}
+            name={field.name}
+            value={value}
+            onChange={(e) => onChange(field.name, e.target.value)}
             aria-invalid={Boolean(error)}
             aria-describedby={error ? `${id}-error` : undefined}
             className={baseInputClass}

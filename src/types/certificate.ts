@@ -1,14 +1,156 @@
-export type IsoStandardOption =
-  | 'ISO 9001:2015'
-  | 'ISO 14001:2015'
-  | 'ISO 45001:2018'
-  | 'ISO 22000:2018'
-  | 'ISO 27001:2022';
+export type StandardCategory =
+  | 'Management System'
+  | 'Welding Quality'
+  | 'Structural Fabrication';
+
+export interface StandardCatalogItem {
+  code: string;
+  default_title: string;
+  category: StandardCategory;
+  sample_scope: string;
+}
+
+export const STANDARD_CATALOG: StandardCatalogItem[] = [
+  {
+    code: 'ISO 9001:2015',
+    default_title: 'Quality Management System',
+    category: 'Management System',
+    sample_scope:
+      'PROVISION OF CONSULTANCY, TRADING, AND MANUFACTURING SERVICES IN ACCORDANCE WITH QUALITY MANAGEMENT SYSTEM REQUIREMENTS',
+  },
+  {
+    code: 'ISO 9001',
+    default_title: 'Quality Management System',
+    category: 'Management System',
+    sample_scope:
+      'PROVISION OF CONSULTANCY, TRADING, AND MANUFACTURING SERVICES IN ACCORDANCE WITH QUALITY MANAGEMENT SYSTEM REQUIREMENTS',
+  },
+  {
+    code: 'ISO 14001:2015',
+    default_title: 'Environmental Management System',
+    category: 'Management System',
+    sample_scope:
+      'MANUFACTURING AND PROCESSING OPERATIONS WITH CONTROLLED ENVIRONMENTAL AND WASTE MANAGEMENT PRACTICES',
+  },
+  {
+    code: 'ISO 14001',
+    default_title: 'Environmental Management System',
+    category: 'Management System',
+    sample_scope:
+      'MANUFACTURING AND PROCESSING OPERATIONS WITH CONTROLLED ENVIRONMENTAL AND WASTE MANAGEMENT PRACTICES',
+  },
+  {
+    code: 'ISO 45001:2018',
+    default_title: 'Occupational Health and Safety Management System',
+    category: 'Management System',
+    sample_scope:
+      'OCCUPATIONAL HEALTH AND SAFETY MANAGEMENT FOR FABRICATION, CONSTRUCTION, AND INDUSTRIAL OPERATIONS',
+  },
+  {
+    code: 'ISO 22000:2018',
+    default_title: 'Food Safety Management System',
+    category: 'Management System',
+    sample_scope:
+      'PROCESSING, PACKAGING, STORAGE, AND DISTRIBUTION OF FOOD PRODUCTS',
+  },
+  {
+    code: 'ISO/IEC 27001:2022',
+    default_title: 'Information Security Management System',
+    category: 'Management System',
+    sample_scope:
+      'INFORMATION SECURITY MANAGEMENT FOR SOFTWARE DEVELOPMENT, IT OPERATIONS, AND DATA PROCESSING',
+  },
+  {
+    code: 'ISO 27001:2022',
+    default_title: 'Information Security Management System',
+    category: 'Management System',
+    sample_scope:
+      'INFORMATION SECURITY MANAGEMENT FOR SOFTWARE DEVELOPMENT, IT OPERATIONS, AND DATA PROCESSING',
+  },
+  {
+    code: 'ISO 13485',
+    default_title: 'Medical Devices Quality Management System',
+    category: 'Management System',
+    sample_scope:
+      'DESIGN, MANUFACTURE, AND SUPPLY OF MEDICAL DEVICES AND RELATED COMPONENTS',
+  },
+  {
+    code: 'ISO 50001:2018',
+    default_title: 'Energy Management System',
+    category: 'Management System',
+    sample_scope:
+      'ENERGY MANAGEMENT AND EFFICIENCY IMPROVEMENT ACROSS INDUSTRIAL AND COMMERCIAL FACILITIES',
+  },
+  {
+    code: 'ISO 3834-2',
+    default_title:
+      'Quality Requirements for Fusion Welding of Metallic Materials — Comprehensive Quality Requirements',
+    category: 'Welding Quality',
+    sample_scope:
+      'FUSION WELDING OF STRUCTURAL STEEL AND METALLIC COMPONENTS REQUIRING COMPREHENSIVE WELDING QUALITY CONTROL',
+  },
+  {
+    code: 'ISO 3834-3',
+    default_title:
+      'Quality Requirements for Fusion Welding of Metallic Materials — Standard Quality Requirements',
+    category: 'Welding Quality',
+    sample_scope:
+      'FUSION WELDING OF METALLIC STRUCTURES AND FABRICATED COMPONENTS UNDER STANDARD QUALITY REQUIREMENTS',
+  },
+  {
+    code: 'ISO 3834-4',
+    default_title:
+      'Quality Requirements for Fusion Welding of Metallic Materials — Elementary Quality Requirements',
+    category: 'Welding Quality',
+    sample_scope:
+      'FUSION WELDING OF METALLIC ITEMS UNDER ELEMENTARY QUALITY REQUIREMENTS',
+  },
+  {
+    code: 'EN 1090-1',
+    default_title:
+      'Execution of Steel Structures and Aluminium Structures — Conformity Assessment of Structural Components',
+    category: 'Structural Fabrication',
+    sample_scope:
+      'FACTORY PRODUCTION CONTROL AND CONFORMITY ASSESSMENT OF FABRICATED STRUCTURAL STEEL AND ALUMINIUM COMPONENTS',
+  },
+  {
+    code: 'EN 1090-2 (EXC2)',
+    default_title:
+      'Execution of Steel Structures and Aluminium Structures — Technical Requirements for Steel Structures (Execution Class EXC2)',
+    category: 'Structural Fabrication',
+    sample_scope:
+      'FABRICATION AND ERECTION OF STRUCTURAL STEELWORK UP TO EXECUTION CLASS EXC2',
+  },
+  {
+    code: 'EN 1090-2 (EXC3)',
+    default_title:
+      'Execution of Steel Structures and Aluminium Structures — Technical Requirements for Steel Structures (Execution Class EXC3)',
+    category: 'Structural Fabrication',
+    sample_scope:
+      'FABRICATION AND ERECTION OF STRUCTURAL STEELWORK UP TO EXECUTION CLASS EXC3',
+  },
+  {
+    code: 'EN 1090-3',
+    default_title:
+      'Execution of Steel Structures and Aluminium Structures — Technical Requirements for Aluminium Structures',
+    category: 'Structural Fabrication',
+    sample_scope:
+      'FABRICATION AND ERECTION OF STRUCTURAL ALUMINIUM COMPONENTS AND ASSEMBLIES',
+  },
+];
+
+export const STANDARD_CATEGORIES: StandardCategory[] = [
+  'Management System',
+  'Welding Quality',
+  'Structural Fabrication',
+];
+
+export type IsoStandardOption = string;
 
 export interface CertificateFormData {
   client_name: string;
   client_address: string;
-  iso_standard: IsoStandardOption | string;
+  iso_standard: IsoStandardOption;
   management_system_title: string;
   scope_of_activities: string;
   certification_body_short: string;
@@ -45,21 +187,19 @@ export interface CertificateFieldConfig {
   group: 'client' | 'standard' | 'dates' | 'body';
 }
 
-export const ISO_STANDARD_OPTIONS: IsoStandardOption[] = [
-  'ISO 9001:2015',
-  'ISO 14001:2015',
-  'ISO 45001:2018',
-  'ISO 22000:2018',
-  'ISO 27001:2022',
-];
+export const ISO_STANDARD_OPTIONS: IsoStandardOption[] = STANDARD_CATALOG.map(
+  (item) => item.code
+);
 
-export const ISO_STANDARD_DEFAULT_TITLES: Record<IsoStandardOption, string> = {
-  'ISO 9001:2015': 'Quality Management System',
-  'ISO 14001:2015': 'Environmental Management System',
-  'ISO 45001:2018': 'Occupational Health & Safety Management System',
-  'ISO 22000:2018': 'Food Safety Management System',
-  'ISO 27001:2022': 'Information Security Management System',
-};
+export const ISO_STANDARD_DEFAULT_TITLES: Record<string, string> =
+  Object.fromEntries(
+    STANDARD_CATALOG.map((item) => [item.code, item.default_title])
+  );
+
+export const ISO_STANDARD_SAMPLE_SCOPES: Record<string, string> =
+  Object.fromEntries(
+    STANDARD_CATALOG.map((item) => [item.code, item.sample_scope])
+  );
 
 export const CERTIFICATE_FORM_FIELDS: CertificateFieldConfig[] = [
   {

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Copy, FilePlus2, Search, Trash2, Upload } from 'lucide-react';
 import {
-  ISO_STANDARD_OPTIONS,
   SavedCertificateRecord,
+  STANDARD_CATALOG,
+  STANDARD_CATEGORIES,
 } from '../types/certificate';
 import {
   filterCertificateRecords,
@@ -61,8 +62,8 @@ export const SavedRegistryView: React.FC<SavedRegistryViewProps> = ({
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <div className="relative w-full lg:max-w-sm">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative w-full sm:max-w-sm">
           <Search
             className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
             aria-hidden="true"
@@ -77,36 +78,33 @@ export const SavedRegistryView: React.FC<SavedRegistryViewProps> = ({
           />
         </div>
 
-        <div
-          className="flex flex-wrap items-center gap-1 rounded-lg bg-slate-100 p-1"
-          role="group"
-          aria-label="Filter by ISO standard"
-        >
-          <button
-            type="button"
-            onClick={() => setStandardFilter('ALL')}
-            className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-              standardFilter === 'ALL'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
+        <div className="flex items-center gap-2">
+          <label
+            htmlFor="registry-standard-filter"
+            className="text-xs font-medium text-slate-600 whitespace-nowrap"
           >
-            All Standards
-          </button>
-          {ISO_STANDARD_OPTIONS.map((std) => (
-            <button
-              key={std}
-              type="button"
-              onClick={() => setStandardFilter(std)}
-              className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                standardFilter === std
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {std}
-            </button>
-          ))}
+            Standard:
+          </label>
+          <select
+            id="registry-standard-filter"
+            aria-label="Filter by ISO standard"
+            value={standardFilter}
+            onChange={(e) => setStandardFilter(e.target.value)}
+            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-800 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
+          >
+            <option value="ALL">All Standards</option>
+            {STANDARD_CATEGORIES.map((category) => (
+              <optgroup key={category} label={category}>
+                {STANDARD_CATALOG.filter((item) => item.category === category).map(
+                  (item) => (
+                    <option key={item.code} value={item.code}>
+                      {item.code}
+                    </option>
+                  )
+                )}
+              </optgroup>
+            ))}
+          </select>
         </div>
       </div>
 

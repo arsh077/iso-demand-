@@ -5,6 +5,7 @@ import {
   CertificateFormData,
   EMPTY_CERTIFICATE_DATA,
   ISO_STANDARD_DEFAULT_TITLES,
+  ISO_STANDARD_SAMPLE_SCOPES,
   IsoStandardOption,
   SAMPLE_CERTIFICATE_DATA,
   SavedCertificateRecord,
@@ -115,27 +116,54 @@ export default function App() {
 
   const handleIsoStandardChange = (
     standard: string,
-    suggestedTitle?: string
+    suggestedTitle?: string,
+    suggestedScope?: string
   ) => {
     setFormData((prev) => {
       const currentTitle = prev.management_system_title.trim();
       const knownDefaultTitles = Object.values(ISO_STANDARD_DEFAULT_TITLES);
-      const isDefaultOrEmpty =
+      const isDefaultOrEmptyTitle =
         !currentTitle ||
         knownDefaultTitles.includes(currentTitle) ||
         currentTitle ===
           ISO_STANDARD_DEFAULT_TITLES[prev.iso_standard as IsoStandardOption];
 
+      const currentScope = prev.scope_of_activities.trim();
+      const knownSampleScopes = Object.values(ISO_STANDARD_SAMPLE_SCOPES);
+      const isDefaultOrEmptyScope =
+        !currentScope || knownSampleScopes.includes(currentScope);
+
       return {
         ...prev,
         iso_standard: standard,
         management_system_title:
-          isDefaultOrEmpty && suggestedTitle
+          isDefaultOrEmptyTitle && suggestedTitle
             ? suggestedTitle
             : prev.management_system_title,
+        scope_of_activities:
+          isDefaultOrEmptyScope && suggestedScope
+            ? suggestedScope
+            : prev.scope_of_activities,
       };
     });
     setSaveStatusMessage(null);
+  };
+
+  const handleApplySampleScope = () => {
+    const sampleScope = ISO_STANDARD_SAMPLE_SCOPES[formData.iso_standard];
+    if (!sampleScope) return;
+    setFormData((prev) => ({
+      ...prev,
+      scope_of_activities: sampleScope,
+    }));
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next.scope_of_activities;
+      return next;
+    });
+    setSaveStatusMessage(
+      `Applied sample scope for ${formData.iso_standard}.`
+    );
   };
 
   const handleAutoCalculateDates = () => {
@@ -350,6 +378,7 @@ export default function App() {
                 errors={errors}
                 onChange={handleFieldChange}
                 onIsoStandardChange={handleIsoStandardChange}
+                onApplySampleScope={handleApplySampleScope}
                 onAutoCalculateDates={handleAutoCalculateDates}
                 onLoadSample={handleLoadSample}
                 onClearForm={handleClearForm}
