@@ -1,0 +1,6 @@
+{
+  "name": "ISO Certificate Studio",
+  "description": "Formal print-ready ISO Certificate of Registration generator and certificate registry modeled after QRO certification standards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
