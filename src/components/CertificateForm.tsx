@@ -1,5 +1,13 @@
 import React from 'react';
-import { Calendar, CheckCircle2, FileText, RotateCcw, Save, Sparkles } from 'lucide-react';
+import {
+  Calendar,
+  CheckCircle2,
+  FileText,
+  RefreshCw,
+  RotateCcw,
+  Save,
+  Sparkles,
+} from 'lucide-react';
 import {
   CERTIFICATE_FORM_FIELDS,
   CertificateFieldConfig,
@@ -22,6 +30,7 @@ interface CertificateFormProps {
     suggestedScope?: string
   ) => void;
   onApplySampleScope: () => void;
+  onRegenerateCertificateNumber: () => void;
   onAutoCalculateDates: () => void;
   onLoadSample: () => void;
   onClearForm: () => void;
@@ -50,6 +59,7 @@ export const CertificateForm: React.FC<CertificateFormProps> = ({
   onChange,
   onIsoStandardChange,
   onApplySampleScope,
+  onRegenerateCertificateNumber,
   onAutoCalculateDates,
   onLoadSample,
   onClearForm,
@@ -99,6 +109,16 @@ export const CertificateForm: React.FC<CertificateFormProps> = ({
               className="text-xs font-medium text-blue-700 hover:text-blue-800 whitespace-nowrap shrink-0 cursor-pointer"
             >
               Use sample scope
+            </button>
+          ) : field.name === 'certificate_number' ? (
+            <button
+              type="button"
+              onClick={onRegenerateCertificateNumber}
+              className="inline-flex items-center gap-1 text-xs font-medium text-blue-700 hover:text-blue-800 whitespace-nowrap shrink-0 cursor-pointer"
+              title="Generate a random Certificate Number"
+            >
+              <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />
+              Regenerate
             </button>
           ) : null}
         </div>

@@ -217,3 +217,23 @@ export function createCertificateRecordId(certNumber: string): string {
   const randomSuffix = Math.random().toString(36).slice(2, 7);
   return `cert_${sanitized || 'iso'}_${Date.now()}_${randomSuffix}`;
 }
+
+export function generateRandomCertificateNumber(
+  certDateStr?: string,
+  certBodyShort?: string
+): string {
+  const dateMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(
+    (certDateStr ?? '').trim()
+  );
+  const yearTwoDigits = dateMatch
+    ? dateMatch[1].slice(-2)
+    : String(new Date().getUTCFullYear()).slice(-2);
+  const monthDigits = dateMatch
+    ? dateMatch[2]
+    : String(new Date().getUTCMonth() + 1).padStart(2, '0');
+  const randomTail = String(Math.floor(1000 + Math.random() * 9000));
+  const firstAlpha = /^[A-Za-z]/.exec((certBodyShort ?? '').trim())?.[0];
+  const suffixLetter = (firstAlpha || 'Q').toUpperCase();
+
+  return `3050${yearTwoDigits}${monthDigits}${randomTail}${suffixLetter}`;
+}

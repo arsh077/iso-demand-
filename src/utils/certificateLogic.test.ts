@@ -4,6 +4,7 @@ import {
   calculateSurveillanceDates,
   filterCertificateRecords,
   formatCertificateDate,
+  generateRandomCertificateNumber,
   getOrdinalSuffix,
   isValidVerificationUrl,
   splitMultilineText,
@@ -127,4 +128,11 @@ test('filterCertificateRecords filters by search query and ISO standard', () => 
     filterCertificateRecords(records, '99887766Q', 'ISO 9001:2015').length,
     0
   );
+});
+
+test('generateRandomCertificateNumber produces valid 13-char QRO-style IDs', () => {
+  const generated = generateRandomCertificateNumber('2026-10-15', 'QRO');
+  assert.match(generated, /^30502610\d{4}Q$/);
+  const generatedCustom = generateRandomCertificateNumber('2027-04-09', 'TUV');
+  assert.match(generatedCustom, /^30502704\d{4}T$/);
 });

@@ -14,6 +14,7 @@ import {
 import {
   calculateSurveillanceDates,
   createCertificateRecordId,
+  generateRandomCertificateNumber,
   validateCertificateData,
 } from './utils/certificateLogic';
 import { CertificateForm } from './components/CertificateForm';
@@ -164,6 +165,23 @@ export default function App() {
     setSaveStatusMessage(
       `Applied sample scope for ${formData.iso_standard}.`
     );
+  };
+
+  const handleRegenerateCertificateNumber = () => {
+    const nextNumber = generateRandomCertificateNumber(
+      formData.date_of_certification,
+      formData.certification_body_short
+    );
+    setFormData((prev) => ({
+      ...prev,
+      certificate_number: nextNumber,
+    }));
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next.certificate_number;
+      return next;
+    });
+    setSaveStatusMessage(`Generated certificate number ${nextNumber}.`);
   };
 
   const handleAutoCalculateDates = () => {
@@ -379,6 +397,7 @@ export default function App() {
                 onChange={handleFieldChange}
                 onIsoStandardChange={handleIsoStandardChange}
                 onApplySampleScope={handleApplySampleScope}
+                onRegenerateCertificateNumber={handleRegenerateCertificateNumber}
                 onAutoCalculateDates={handleAutoCalculateDates}
                 onLoadSample={handleLoadSample}
                 onClearForm={handleClearForm}
